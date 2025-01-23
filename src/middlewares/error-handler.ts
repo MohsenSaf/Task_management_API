@@ -7,21 +7,26 @@ export default (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   const status = error.status || 500
 
   log({
     level: "error",
     message: error.message,
-    metadata: { user: req.user, url: req.url, status },
+    metadata: {
+      user: req.user ?? "Unauthenticated User",
+      url: req.url,
+      status,
+    },
   })
 
   if (error instanceof JsonSchemaValidation) {
-    return res.status(400).json({
+    res.status(400).json({
       code: 400,
       message: "Validation Error",
       fields: error.validations,
     })
+    return
   }
 
   const message =

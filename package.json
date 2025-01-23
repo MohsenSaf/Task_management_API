@@ -22,18 +22,22 @@
   },
   "dependencies": {
     "@prisma/client": "^6.2.1",
+    "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/express-jsonschema": "^1.1.5",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/method-override": "^3.0.0",
+    "bcrypt": "^5.1.1",
     "connect-redis": "^8.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express-async-errors": "^3.1.1",
+    "express-jsonschema": "^1.1.6",
     "express-session": "^1.18.1",
     "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
+    "method-override": "^3.0.0",
     "winston": "^3.17.0",
     "winston-mongodb": "^6.0.0"
   }

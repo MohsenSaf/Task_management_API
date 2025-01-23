@@ -1,7 +1,7 @@
 import winston, { LogEntry } from "winston"
 import "winston-mongodb"
 
-if (!process.env.MONGO_URL) {
+if (!process.env?.MONGO_URL) {
   throw new Error("MONGO_URL is not defined in the environment variables.")
 }
 

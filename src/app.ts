@@ -7,6 +7,8 @@ import session from "express-session"
 import { redisClient } from "@/configs/redis"
 import cors from "cors"
 import { RedisStore } from "connect-redis"
+import prisma from "@/prisma"
+import router from "./routes"
 
 export async function bootstrap() {
   const app = express()
@@ -23,14 +25,28 @@ export async function bootstrap() {
     secret: String(process.env.SECRET),
     resave: false,
     saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge:
+        process.env.NODE_ENV === "production"
+          ? 1000 * 60 * 60 * 24 * 7
+          : 1000 * 60 * 50,
+    },
   })
 
   app.use(sessionMiddleware)
 
   app.use(auth)
 
-  // app.use(errorHandler)
-  // app.use(methodOverride)
+  app.use(methodOverride)
+  app.use(router)
+  app.use(errorHandler)
+
+  process.on("SIGINT", async () => {
+    await prisma.$disconnect()
+    process.exit(0)
+  })
 
   return app
 }

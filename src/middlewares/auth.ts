@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken"
 import { NotAuthorizeError } from "@/utils/errors"
 import { Request, Response, NextFunction } from "express"
-import { JwtPayload } from "@/types/express"
 
 export default (req: Request, res: Response, next: NextFunction) => {
   if (req.headers.authorization) {
@@ -13,12 +12,12 @@ export default (req: Request, res: Response, next: NextFunction) => {
           throw new NotAuthorizeError(String(error))
         }
 
-        req.user = payload as JwtPayload
+        req.user = payload as User 
         next()
       })
     }
   } else {
-    req.user = null
+    req.user = req.session?.user 
     next()
   }
 }

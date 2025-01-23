@@ -1,7 +1,7 @@
 export class BadRequestError extends Error {
   status = 400
 
-  constructor(message = "Bad Request") {
+  constructor(message: string = "Bad Request") {
     super(message)
   }
 }
@@ -9,7 +9,7 @@ export class BadRequestError extends Error {
 export class NotAuthorizeError extends Error {
   status = 401
 
-  constructor(message = "Not Authorize") {
+  constructor(message: string = "Not Authorize") {
     super(message)
   }
 }
@@ -17,7 +17,7 @@ export class NotAuthorizeError extends Error {
 export class ForbiddenError extends Error {
   status = 403
 
-  constructor(message = "Forbidden") {
+  constructor(message: string = "Forbidden") {
     super(message)
   }
 }
@@ -25,7 +25,7 @@ export class ForbiddenError extends Error {
 export class NotFoundError extends Error {
   status = 404
 
-  constructor(message = "Not Found") {
+  constructor(message: string = "Not Found") {
     super(message)
   }
 }

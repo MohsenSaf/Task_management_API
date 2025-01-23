@@ -18,7 +18,8 @@ model User {
   username  String        @unique
   email     String        @unique
   password  String
-  role      Role          @default(USER)
+  token     String?       @unique
+  role      ROLE          @default(USER)
   tasks     Task[]
   sessions  UserSession[]
   createdAt DateTime      @default(now())
@@ -47,7 +48,7 @@ model UserSession {
   user      User     @relation(fields: [userid], references: [id])
 }
 
-enum Role {
+enum ROLE {
   ADMIN
   USER
 }
