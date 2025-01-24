@@ -1,6 +1,5 @@
 import { BadRequestError, NotFoundError } from "@/utils/errors"
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
 import { generateAccessToken, generateRefreshToken } from "@/utils/token"
 import { Request, Response } from "express"
 import prisma from "@/prisma"
@@ -79,7 +78,34 @@ class AuthController {
     res.json({ ...user, accessToken: token, token: refreshToken })
   }
 
-  
+  async getToken(req: Request, res: Response) {
+    const { refreshToken } = req.body
+
+    const user = await prisma.user.findUnique({
+      where: { token: refreshToken },
+    })
+
+    if (!user) {
+      throw new NotFoundError("User not Found")
+    }
+
+    const token = generateAccessToken(user)
+
+    res.json({ accessToken: token })
+  }
+
+  logout(req: Request, res: Response) {
+    if (req.session.user) {
+      req.session.destroy((error) => {
+        if (!error) {
+          log({ message: "user:logout", metadata: { user: req.user } })
+          res.json({ message: "user logout" })
+        }
+      })
+    } else {
+      throw new NotFoundError("User is not logged in")
+    }
+  }
 }
 
 export default new AuthController()
