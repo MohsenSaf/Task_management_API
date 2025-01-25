@@ -12,9 +12,6 @@ class AuthController {
     }
     const { username, password, email } = req.body
 
-    if (!username || !password || !email) {
-      throw new BadRequestError("Username, Password and email are required!")
-    }
 
     try {
       const hashedPassword: string = bcrypt.hashSync(password, 12)

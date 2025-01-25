@@ -1,10 +1,12 @@
 import { Router } from "express"
-import auth from "./auth"
 import { NotFoundError } from "@/utils/errors"
+import auth from "./auth"
+import task from "./task"
 
 const router = Router()
 
 router.use("/api/auth", auth)
+router.use("/api/task", task)
 
 router.use("*", () => {
   throw new NotFoundError("Wrong address")

@@ -16,7 +16,7 @@ export function generateAccessToken(user: User) {
     },
     String(process.env.JWT_SECRET),
     {
-      expiresIn: "1000s",
+      // expiresIn: "1000s",
     }
   )
 }

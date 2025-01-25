@@ -37,6 +37,8 @@ model Task {
   user        User         @relation(fields: [userId], references: [id])
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+
+  @@unique([title, userId])
 }
 
 model UserSession {
