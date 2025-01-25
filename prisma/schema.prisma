@@ -21,7 +21,6 @@ model User {
   token     String?       @unique
   role      ROLE          @default(USER)
   tasks     Task[]
-  sessions  UserSession[]
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 }
@@ -39,15 +38,6 @@ model Task {
   updatedAt   DateTime     @updatedAt
 
   @@unique([title, userId])
-}
-
-model UserSession {
-  id        Int      @id @default(autoincrement())
-  userid    Int
-  token     String
-  expiresAt DateTime
-  createdAT DateTime @default(now())
-  user      User     @relation(fields: [userid], references: [id])
 }
 
 enum ROLE {
