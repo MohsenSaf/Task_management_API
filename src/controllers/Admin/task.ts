@@ -4,48 +4,12 @@ import { log } from "@/utils/logger"
 import { BadRequestError, NotFoundError } from "@/utils/errors"
 
 class TaskController {
-  async create(req: Request, res: Response) {
-    const { title, description, priority, dueDate } = req.body
-
-    let formateData
-
-    if (dueDate) {
-      const splitDate = dueDate.split("-")
-      formateData = new Date(
-        Date.UTC(splitDate[0], splitDate[1] - 1, splitDate[2])
-      )
-    }
-
-    try {
-      const task = await prisma.task.create({
-        data: {
-          title,
-          description,
-          priority: priority,
-          dueDate: dueDate ? formateData : null,
-          userId: req.user!.id,
-        },
-      })
-
-      log({ message: "add:task", metadata: { user: req.user, task: task } })
-
-      res.json(task)
-    } catch (error: any) {
-      console.log(error)
-      if (error.code === "P2002") {
-        throw new BadRequestError("Title is duplicate!")
-      }
-      res.status(400).json(error)
-    }
-  }
-
   async get(req: Request, res: Response) {
     const { id } = req.params
 
     const task = await prisma.task.findUnique({
       where: {
         id: Number(id),
-        userId: req.user?.id,
       },
     })
 
@@ -61,9 +25,6 @@ class TaskController {
     const pageSize = 5
 
     const tasks = await prisma.task.findMany({
-      where: {
-        userId: req.user?.id,
-      },
       skip: (Number(page) - 1) * 5,
       take: pageSize + 1,
     })
@@ -91,14 +52,12 @@ class TaskController {
       formateDate = new Date(
         Date.UTC(splitDate[+0], splitDate[+1] - 1, splitDate[+2])
       )
-      console.log(formateDate)
     }
 
     try {
       const task = await prisma.task.update({
         where: {
           id: Number(id),
-          userId: req.user?.id,
         },
         data: {
           title: title,
@@ -128,7 +87,6 @@ class TaskController {
       task = await prisma.task.delete({
         where: {
           id: Number(id),
-          userId: req.user?.id,
         },
       })
 
